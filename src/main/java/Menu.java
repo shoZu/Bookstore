@@ -1,4 +1,7 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -6,12 +9,16 @@ public class Menu {
     Scanner scanner = new Scanner(System.in);
     Reader reader = new Reader();
     String option;
-    List<Book> listOfBooks = reader.read();
+    List<Book> listOfBooks = reader.readBook();
+    List<Author> listOfAuthor = reader.readAuthor();
+    List<Categories> listOfCategories = reader.readCategories();
+
 
     public Menu() throws IOException {
     }
 
-    public void chooseOption() {
+
+    public void chooseOption() throws IOException {
         System.out.println("Menu");
         System.out.println("1. Wyswietl liste ksiazek");
         System.out.println("2. Dodaj nowa książkę");
@@ -24,17 +31,30 @@ public class Menu {
             case "1":
                 BooksList();
                 chooseOption();
+                break;
             case "2":
                 addBook();
                 chooseOption();
+                break;
             case "3":
                 deleteBook();
                 chooseOption();
+                break;
+            case "4":
+                edit();
+                chooseOption();
+                break;
+            case "5":
+                save();
+                chooseOption();
+                break;
             case "6":
+                System.out.println("Koniec programu");
                 break;
             default:
-                System.out.println("podales zly znak ");
+                System.out.println("Podales zly znak ");
                 chooseOption();
+                break;
         }
     }
 
@@ -47,11 +67,37 @@ public class Menu {
     private void deleteBook() {
         System.out.println("Podaj tytul ksiazki do usuniecia");
         option = scanner.next();
-        for (Book book:listOfBooks) {
-            if(book.getTitle().equals(option)){
-                System.out.println("Ksiazka o tytule " + book.getTitle() + " zostala usunieta");
-                listOfBooks.remove(book);
+        int delete = -1;
+        for (int i = 0; i < listOfBooks.size(); i++) {
+            Book book = listOfBooks.get(i);
+            if (book.getTitle().equals(option)) {
+                delete = i;
             }
+        }
+        if (delete > 0) {
+            listOfBooks.remove(delete);
+        } else {
+            System.out.println("Nie ma ksiazki o podanym tytule");
+        }
+    }
+
+    private void edit() {
+        System.out.println("Podaj tytul ksiazki do zaminy roku wydania");
+        option = scanner.next();
+        int set = -1;
+        for (int i = 0; i < listOfBooks.size(); i++) {
+            Book book = listOfBooks.get(i);
+            if (book.getTitle().equals(option)) {
+                set = i;
+            }
+        }
+        if (set > 0) {
+            System.out.println("Aktualny rok wydania to: " + listOfBooks.get(set).getYear());
+            System.out.println("Podaj nowy rok wydania:");
+            String year = scanner.next();
+            listOfBooks.get(set).setYear(year);
+        } else {
+            System.out.println("Nie ma ksiazki o podanym tytule");
         }
     }
 
@@ -62,6 +108,43 @@ public class Menu {
         String isbn = scanner.next();
         System.out.println("Podaj rok wydania ksiązki");
         String year = scanner.next();
-        listOfBooks.add(new Book(title, isbn, year));
+        System.out.println("Podaj typ oprawy M/T");
+        String type = scanner.next();
+        System.out.println("Wybierz autorów ksiazki podajac ich id po ,");
+        System.out.println(listOfAuthor.toString());
+        String author = scanner.next();
+        List<Author> listAuthor = new ArrayList<>();
+        String[] authors = author.split(",");
+        for (String number : authors) {
+            listAuthor.add(listOfAuthor.get(Integer.parseInt(number) - 1));
+        }
+        System.out.println("Podaj kategorie ksiazki po jej id");
+        System.out.println(listOfCategories.toString());
+        int category = scanner.nextInt();
+        listOfBooks.add(new Book(listOfBooks.size() + 1, title, isbn, year, type, listAuthor, listOfCategories.get(category-1)));
+    }
+
+    private void save() {
+        try {
+            PrintWriter out = new PrintWriter("books.csv");
+            for (Book book : listOfBooks) {
+                StringBuilder stringBuilder = new StringBuilder() ;
+                List<Author> authors = book.getAuthors();
+                for (int i = 0; i < authors.size(); i++) {
+                    Author author = authors.get(i);
+                    stringBuilder.append(author.getId());
+                    if(i<authors.size()-1){
+                        stringBuilder.append(",");
+                    }
+                }
+
+                out.println(book.getId() + ";" + book.getTitle() + ";" + book.getIsbn() + ";"
+                        + book.getYear() + ";" + book.getType() + ";" + stringBuilder + ";"
+                        + book.getCategory().getId());
+            }
+            out.close();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Niestety, nie mogę utworzyć pliku!");
+        }
     }
 }
