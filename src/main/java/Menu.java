@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Menu {
-    Scanner scanner = new Scanner(System.in);
-    Reader reader = new Reader();
-    String option;
-    List<Book> listOfBooks = reader.readBook();
-    List<Author> listOfAuthor = reader.readAuthor();
-    List<Categories> listOfCategories = reader.readCategories();
+class Menu {
+    private final Scanner scanner = new Scanner(System.in);
+    private final Reader reader = new Reader();
+    private final List<Book> listOfBooks = reader.readBook();
+    private final List<Author> listOfAuthor = reader.readAuthor();
+    private final List<Categories> listOfCategories = reader.readCategories();
+    private String option;
 
 
     public Menu() throws IOException {
     }
 
 
-    public void chooseOption() throws IOException {
+    public void chooseOption() {
         System.out.println("Menu");
         System.out.println("1. Wyswietl liste ksiazek");
         System.out.println("2. Dodaj nowa książkę");
@@ -111,7 +111,7 @@ public class Menu {
         System.out.println("Podaj typ oprawy M/T");
         String type = scanner.next();
         System.out.println("Wybierz autorów ksiazki podajac ich id po ,");
-        System.out.println(listOfAuthor.toString());
+        System.out.println(listOfAuthor);
         String author = scanner.next();
         List<Author> listAuthor = new ArrayList<>();
         String[] authors = author.split(",");
@@ -119,21 +119,21 @@ public class Menu {
             listAuthor.add(listOfAuthor.get(Integer.parseInt(number) - 1));
         }
         System.out.println("Podaj kategorie ksiazki po jej id");
-        System.out.println(listOfCategories.toString());
+        System.out.println(listOfCategories);
         int category = scanner.nextInt();
-        listOfBooks.add(new Book(listOfBooks.size() + 1, title, isbn, year, type, listAuthor, listOfCategories.get(category-1)));
+        listOfBooks.add(new Book(listOfBooks.size() + 1, title, isbn, year, type, listAuthor, listOfCategories.get(category - 1)));
     }
 
     private void save() {
         try {
             PrintWriter out = new PrintWriter("books.csv");
             for (Book book : listOfBooks) {
-                StringBuilder stringBuilder = new StringBuilder() ;
+                StringBuilder stringBuilder = new StringBuilder();
                 List<Author> authors = book.getAuthors();
                 for (int i = 0; i < authors.size(); i++) {
                     Author author = authors.get(i);
                     stringBuilder.append(author.getId());
-                    if(i<authors.size()-1){
+                    if (i < authors.size() - 1) {
                         stringBuilder.append(",");
                     }
                 }

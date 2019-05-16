@@ -1,7 +1,7 @@
-public class Author {
-    int id;
-    String name;
-    String age;
+class Author {
+    private final int id;
+    private final String name;
+    private final String age;
 
     public Author(int id, String name, String age) {
         this.id = id;

@@ -1,7 +1,7 @@
 public class Categories {
-    int id;
-    String name;
-    int priority;
+    private final int id;
+    private final String name;
+    private final int priority;
 
     public Categories(int id, String name, int priority) {
         this.id = id;
@@ -11,7 +11,7 @@ public class Categories {
 
     @Override
     public String toString() {
-        return  name;
+        return name;
     }
 
     public int getId() {
