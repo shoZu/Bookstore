@@ -1,5 +1,4 @@
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +12,8 @@ class Menu {
     private final List<Categories> listOfCategories = reader.readCategories();
     private String option;
 
-
-    public Menu() throws IOException {
-    }
-
-
     public void chooseOption() {
-        System.out.println("Menu");
-        System.out.println("1. Wyswietl liste ksiazek");
-        System.out.println("2. Dodaj nowa książkę");
-        System.out.println("3. Usuniecie ksiazki po nazwie");
-        System.out.println("4. Edycja roku wydania książki ");
-        System.out.println("5. Zapisz liste ksiazek do pliku .csv");
-        System.out.println("6. Wyjdz");
+        printMenu();
         option = scanner.next();
         switch (option) {
             case "1":
@@ -56,6 +44,16 @@ class Menu {
                 chooseOption();
                 break;
         }
+    }
+
+    private void printMenu() {
+        System.out.println("Menu");
+        System.out.println("1. Wyswietl liste ksiazek");
+        System.out.println("2. Dodaj nowa książkę");
+        System.out.println("3. Usuniecie ksiazki po nazwie");
+        System.out.println("4. Edycja roku wydania książki ");
+        System.out.println("5. Zapisz liste ksiazek do pliku .csv");
+        System.out.println("6. Wyjdz");
     }
 
     private void BooksList() {
@@ -121,7 +119,14 @@ class Menu {
         System.out.println("Podaj kategorie ksiazki po jej id");
         System.out.println(listOfCategories);
         int category = scanner.nextInt();
-        listOfBooks.add(new Book(listOfBooks.size() + 1, title, isbn, year, type, listAuthor, listOfCategories.get(category - 1)));
+        int max=0;
+        for (Book book:listOfBooks) {
+            if(book.getId()>max){
+                max=book.getId();
+            }
+        }
+        listOfBooks.add(new Book(max + 1, title, isbn, year, type,
+                listAuthor, listOfCategories.get(category - 1)));
     }
 
     private void save() {

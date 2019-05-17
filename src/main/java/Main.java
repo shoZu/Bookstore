@@ -1,8 +1,6 @@
-import java.io.IOException;
-
 class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
 //        Login login = new Login();
 //        login.logIn();
         Menu menu = new Menu();
