@@ -172,7 +172,29 @@ public class BookFunctions {
     }
 
     //Posortuj książki po roku wydania zaczynając od wydanej najpóźniej.
-    public List<Book> sortBook(List<Book> list){
+    public List<Book> sortBookReverseOrder(List<Book> list) {
+        return list.stream().sorted(Comparator.comparing(book -> book.getYear(), Comparator.reverseOrder())).collect(Collectors.toList());
+    }
+
+    // Posortuj książki po roku wydania zaczynając od wydanej najwcześniej
+    public List<Book> sortBook(List<Book> list) {
         return list.stream().sorted(Comparator.comparing(book -> book.getYear())).collect(Collectors.toList());
     }
+
+    // Podziel listę książek na 3 listy po 2 książki i zwróć z metody. (*) (bez streama)
+    public List<List<Book>> divideList(List<Book> list) {
+        List<List<Book>> finalList = new ArrayList<>();
+        for (int i = 0; i <= list.size()/2+1; i=i+2) {
+            finalList.add(list.subList(i,i+2));
+        }
+        return finalList;
+    }
+
+    // Pogrupuj książki po roku wydania. Metoda powinna zwrócić Map<Integer, List<Book>>
+    // gdzie kluczem jest rok wydania a wartością lista książek wydana w tym roku. (*)
+//    public Map<Integer, List<Book>> mapOfBooksByYear (List<Book> list){
+//        for (Book book:list) {
+//
+//        }
+//    }
 }

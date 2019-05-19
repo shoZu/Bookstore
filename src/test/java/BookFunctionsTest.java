@@ -1,23 +1,24 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class BookFunctionsTest {
     BookFunctions bookFunctions = new BookFunctions();
     private List<Book> listOfBooks = new ArrayList<>();
 
     {
-        listOfBooks.add(new Book(1, "Java1", "1234567890123", 2001, "1", null, null));
-        listOfBooks.add(new Book(2, "Java2", "1234567890124", 2002, "2", null, null));
-        listOfBooks.add(new Book(3, "Java3", "1234567890125", 2003, "3", null, null));
-        listOfBooks.add(new Book(4, "Cjav4", "1234567890126", 2008, "1", null, null));
-        listOfBooks.add(new Book(5, "Java5", "1234567890127", 2005, "2", null, null));
-        listOfBooks.add(new Book(6, "Java6", "1234567890128", 2006, "3", null, null));
+        listOfBooks.add(new Book(1, "Java1", "1234567890123", 2001, "M", null, null));
+        listOfBooks.add(new Book(2, "Java2", "1234567890124", 2002, "M", null, null));
+        listOfBooks.add(new Book(3, "Java3", "1234567890125", 2003, "M", null, null));
+        listOfBooks.add(new Book(4, "Cjav4", "1234567890126", 2008, "T", null, null));
+        listOfBooks.add(new Book(5, "Java5", "1234567890127", 2005, "T", null, null));
+        listOfBooks.add(new Book(6, "Java6", "1234567890128", 2006, "T", null, null));
     }
 
 
@@ -120,13 +121,13 @@ class BookFunctionsTest {
     @Test
     public void averageYearsOfBooksTest() {
         double year = bookFunctions.averageYearsOfBooks(listOfBooks);
-        Assertions.assertEquals(2003.5 , year);
+        Assertions.assertEquals(2003.5, year);
     }
 
     @Test
     public void averageYearsOfBooksStreamTest() {
         double year = bookFunctions.averageYearsOfBooksStream(listOfBooks);
-        Assertions.assertEquals(2003.5 , year);
+        Assertions.assertEquals(2003.5, year);
     }
 
     @Test
@@ -156,15 +157,31 @@ class BookFunctionsTest {
     @Test
     public void yearOfBooksDividedBy2Test() {
         List<Book> books = bookFunctions.yearOfBooksDividedBy2(listOfBooks);
-        assertThat(books).contains(listOfBooks.get(1),listOfBooks.get(3),listOfBooks.get(5));
+        assertThat(books).contains(listOfBooks.get(1), listOfBooks.get(3), listOfBooks.get(5));
     }
 
     @Test
     public void mapOfbooks() {
         Map<String, Book> lastBooks = bookFunctions.mapOfbooks(listOfBooks);
-
+        Assertions.assertEquals(lastBooks.get("1234567890123").getTitle(), listOfBooks.get(0).getTitle());
     }
 
+    @Test
+    public void sortBooksortBookReverseOrderTest(){
+        List<Book> books = bookFunctions.sortBookReverseOrder(listOfBooks);
+        Assertions.assertEquals(books.get(0).getTitle(),listOfBooks.get(3).getTitle());
+    }
 
+    @Test
+    public void sortBooksortBook(){
+        List<Book> books = bookFunctions.sortBook(listOfBooks);
+        Assertions.assertEquals(books.get(0).getTitle(),listOfBooks.get(0).getTitle());
+    }
+
+    @Test
+    public void test(){
+        List<List<Book>> books = bookFunctions.divideList(listOfBooks);
+        System.out.println(books);
+    }
 
 }
