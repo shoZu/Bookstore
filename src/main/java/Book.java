@@ -7,10 +7,10 @@ class Book {
     private final Categories category;
     private String title;
     private String isbn;
-    private String year;
+    private int year;
 
 
-    public Book(int id, String title, String isbn, String year, String type, List<Author> authors, Categories category) {
+    public Book(int id, String title, String isbn, int year, String type, List<Author> authors, Categories category) {
         this.id = id;
         this.title = title;
         this.isbn = isbn;
@@ -63,11 +63,11 @@ class Book {
         this.isbn = isbn;
     }
 
-    public String getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
 

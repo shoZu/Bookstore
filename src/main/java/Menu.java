@@ -1,5 +1,8 @@
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -93,7 +96,7 @@ class Menu {
             System.out.println("Aktualny rok wydania to: " + listOfBooks.get(set).getYear());
             System.out.println("Podaj nowy rok wydania:");
             String year = scanner.next();
-            listOfBooks.get(set).setYear(year);
+            listOfBooks.get(set).setYear(Integer.parseInt(year));
         } else {
             System.out.println("Nie ma ksiazki o podanym tytule");
         }
@@ -104,12 +107,30 @@ class Menu {
         String title = scanner.next();
         System.out.println("Podaj ISBN ksiązki");
         String isbn = scanner.next();
+        while (!StringUtils.isNumeric(isbn)) {
+            System.out.println("Podles zly ISBN ksiązki, sprobuj jeszcze raz");
+            isbn = scanner.next();
+        }
         System.out.println("Podaj rok wydania ksiązki");
         String year = scanner.next();
+        while (!StringUtils.isNumeric(year)) {
+            System.out.println("Podles zly rok wydania ksiązki, sprobuj jeszcze raz");
+            year = scanner.next();
+        }
+        while (!(Integer.parseInt(year) > 0 && Integer.parseInt(year) <= LocalDate.now().getYear())) {
+            System.out.println("Podles zly rok wydania ksiązki, sprobuj jeszcze raz");
+            year = scanner.next();
+        }
         System.out.println("Podaj typ oprawy M/T");
         String type = scanner.next();
+        while (type.equalsIgnoreCase("M") || type.equalsIgnoreCase("T")) {
+            System.out.println("Podales zly typ oprawy, sprobuj jeszcze raz wybierajac M (miekka) lub T (twarda) oprawa");
+            type = scanner.next();
+        }
         System.out.println("Wybierz autorów ksiazki podajac ich id po ,");
-        System.out.println(listOfAuthor);
+        for (Author author : listOfAuthor) {
+            System.out.println(author.getId() + ": " + author.getName() + ", ");
+        }
         String author = scanner.next();
         List<Author> listAuthor = new ArrayList<>();
         String[] authors = author.split(",");
@@ -117,16 +138,19 @@ class Menu {
             listAuthor.add(listOfAuthor.get(Integer.parseInt(number) - 1));
         }
         System.out.println("Podaj kategorie ksiazki po jej id");
-        System.out.println(listOfCategories);
+        for (Categories categories : listOfCategories) {
+            System.out.println(categories.getId() + ": " + categories.getName());
+        }
         int category = scanner.nextInt();
-        int max=0;
-        for (Book book:listOfBooks) {
-            if(book.getId()>max){
-                max=book.getId();
+        int max = 0;
+        for (Book book : listOfBooks) {
+            if (book.getId() > max) {
+                max = book.getId();
             }
         }
-        listOfBooks.add(new Book(max + 1, title, isbn, year, type,
+        listOfBooks.add(new Book(max + 1, title, isbn, Integer.parseInt(year), type,
                 listAuthor, listOfCategories.get(category - 1)));
+        System.out.println("Ksiazka dodana pomyslnie");
     }
 
     private void save() {

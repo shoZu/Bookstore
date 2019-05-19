@@ -12,7 +12,7 @@ class Login {
         users.put("admin", "admin123");
     }
 
-    private void logIn() throws IOException {
+    private void logIn() {
         System.out.println("Podaj login");
         String login = scanner.next();
         if (users.containsKey(login)) {

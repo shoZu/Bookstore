@@ -15,7 +15,7 @@ class Reader {
             try {
                 line = file.readLine();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Blad przy wczytywaniu pliku books.csv");
             }
             String[] table;
 
@@ -29,15 +29,14 @@ class Reader {
                             listAuthor.add(author);
                         }
                     }
-
                 }
-                Book book = new Book(Integer.parseInt(table[0]), table[1], table[2], table[3], table[4],
+                Book book = new Book(Integer.parseInt(table[0]), table[1], table[2], Integer.parseInt(table[3]), table[4],
                         listAuthor, readCategories().get(Integer.parseInt(table[6]) - 1));
                 listOfBook.add(book);
                 line = file.readLine();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Nie ma pliku books.csv");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +51,7 @@ class Reader {
             try {
                 line = file.readLine();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Blad przy wczytywaniu pliku authors.csv");
             }
             String[] table;
 
@@ -62,7 +61,7 @@ class Reader {
                 line = file.readLine();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Nie ma pliku authors.csv");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +76,7 @@ class Reader {
             try {
                 line = file.readLine();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Blad przy wczytywaniu pliku categories.csv");
             }
             String[] table;
 
@@ -87,7 +86,7 @@ class Reader {
                 line = file.readLine();
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Nie ma pliku categories.csv");
         } catch (IOException e) {
             e.printStackTrace();
         }
