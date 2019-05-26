@@ -1,0 +1,20 @@
+
+[
+squid:S106"9Replace this use of System.out or System.err by a logger.(óÿûìúÿÿÿÿ8³Ë¶ö®-
+€squid:S1192"]Define a constant instead of duplicating this literal "Blad przy wczytywaniu pliku " 3 times.(óÿûìúÿÿÿÿ8³Ë¶ö®-
+Xsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8³Ë¶ö®-
+[
+squid:S106-"9Replace this use of System.out or System.err by a logger.(·ãÏÆıÿÿÿÿ8Æ÷Íù®-
+V
+squid:S106<"9Replace this use of System.out or System.err by a logger.(ä¯Åƒ8Æ÷Íù®-
+V
+squid:S106F"9Replace this use of System.out or System.err by a logger.(Âù…¨8Æ÷Íù®-
+V
+squid:S106U"9Replace this use of System.out or System.err by a logger.(Í•Íû8Æ÷Íù®-
+[
+squid:S106_"9Replace this use of System.out or System.err by a logger.(Ë†Œ¼şÿÿÿÿ8Æ÷Íù®-
+Xsquid:S11419"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8Æ÷Íù®-
+Xsquid:S1141R"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8Æ÷Íù®-
+Fsquid:S1148/"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8Æ÷Íù®-
+Fsquid:S1148H"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8Æ÷Íù®-
+Fsquid:S1148a"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8Æ÷Íù®-
