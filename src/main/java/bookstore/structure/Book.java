@@ -1,6 +1,8 @@
+package bookstore.structure;
+
 import java.util.List;
 
-class Book {
+public class Book {
     private final int id;
     private final String type;
     private final List<Author> authors;

@@ -1,3 +1,5 @@
+package bookstore.structure;
+
 public class Categories {
     private final int id;
     private final String name;
@@ -13,6 +15,11 @@ public class Categories {
     public String toString() {
         return name;
     }
+
+    public String toString2() {
+        return id + ": " + name;
+    }
+
 
     public int getId() {
         return id;

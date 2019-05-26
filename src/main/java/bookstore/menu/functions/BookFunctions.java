@@ -1,3 +1,7 @@
+package bookstore.menu.functions;
+
+import bookstore.structure.Book;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,15 +27,7 @@ public class BookFunctions {
 
     //    Zwróć dwie ostatnie książki.
     public List<Book> lastTwoBooks(List<Book> list) {
-        List<Book> lastList = new ArrayList<>();
-        if (list.size() >= 2) {
-            for (int i = list.size() - 2; i < list.size(); i++) {
-                lastList.add(list.get(i));
-            }
-        } else {
-            lastList.addAll(list);
-        }
-        return lastList;
+        return list.subList(list.size() - 2, list.size());
     }
 
     public List<Book> lastTwoBooksStream(List<Book> list) {
@@ -53,7 +49,7 @@ public class BookFunctions {
 
     public Optional<Book> getEarliestReleasedBookStream(List<Book> list) {
         return list.stream()
-                .min((o1, o2) -> Integer.compare(o1.getYear(), o2.getYear()));
+                .min(Comparator.comparingInt(Book::getYear));
     }
 
     //    Zwróć najpóźniej wydana książkę.
@@ -69,21 +65,21 @@ public class BookFunctions {
 
     public Optional<Book> getLateestReleasedBookStream(List<Book> list) {
         return list.stream()
-                .max((o1, o2) -> Integer.compare(o1.getYear(), o2.getYear()));
+                .max(Comparator.comparingInt(Book::getYear));
     }
 
     //    Zwróć sumę lat wydania wszystkich książek.
     public int sumOfYears(List<Book> list) {
         int sumYears = 0;
         for (Book book : list) {
-            sumYears = sumYears + book.getYear();
+            sumYears += book.getYear();
         }
         return sumYears;
     }
 
     public int sumOfYearsStream(List<Book> list) {
         return list.stream()
-                .mapToInt(book -> book.getYear())
+                .mapToInt(Book::getYear)
                 .sum();
     }
 
@@ -91,8 +87,9 @@ public class BookFunctions {
     public int booksReleasedAfter2007(List<Book> list) {
         int after2007 = 0;
         for (Book book : list) {
-            if (book.getYear() > 2007)
+            if (book.getYear() > 2007) {
                 after2007 = after2007 + 1;
+            }
         }
         return after2007;
     }
@@ -105,13 +102,13 @@ public class BookFunctions {
 
     //    Zwróć informacje o tym czy wszystkie książki w naszym katalogu są wydane po 2000 roku.
     public boolean releasedAfter2000(List<Book> list) {
-        int booksReleasedAfter2000 = 0;
+        boolean booksReleasedAfter2000 = true;
         for (Book book : list) {
             if (book.getYear() > 2000) {
-                booksReleasedAfter2000++;
+                booksReleasedAfter2000 = false;
             }
         }
-        return booksReleasedAfter2000 == list.size();
+        return booksReleasedAfter2000;
     }
 
     public boolean releasedAfter2000Stream(List<Book> list) {
@@ -129,9 +126,10 @@ public class BookFunctions {
         return sum / list.size();
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     public double averageYearsOfBooksStream(List<Book> list) {
         return list.stream()
-                .mapToInt(book -> book.getYear())
+                .mapToInt(Book::getYear)
                 .average()
                 .getAsDouble();
     }
@@ -148,14 +146,15 @@ public class BookFunctions {
     }
 
     public boolean releasedBefore2003Stream(List<Book> list) {
-        return list.stream().anyMatch(book -> book.getYear() < 2003);
+        return list.stream()
+                .anyMatch(book -> book.getYear() < 2003);
     }
 
     // Zwróć wszystkie książki, których tytuł zaczyna się od litery “C” i były one wydane po 2007 roku.
-    public List<Book> booksStartsCAndRealeasdAfter2007(List<Book> list) {
+    public List<Book> booksStartsCAndRealeasdAfter2007(List<Book> list, int year) {
         return list.stream()
                 .filter(book -> book.getTitle().startsWith("C"))
-                .filter(book -> book.getYear() > 2007)
+                .filter(book -> book.getYear() > year)
                 .collect(Collectors.toList());
     }
 
@@ -166,35 +165,62 @@ public class BookFunctions {
                 .collect(Collectors.toList());
     }
 
-    // Zwróć mapę, która będzie miała klucz isbn i wartość obiekt Book (Map<String, Book>).
+    // Zwróć mapę, która będzie miała klucz isbn i wartość obiekt bookstore.structure.Book (Map<String, bookstore.structure.Book>).
     public Map<String, Book> mapOfbooks(List<Book> list) {
-        return list.stream().collect(Collectors.toMap(book -> book.getIsbn(), book -> book));
+        return list.stream()
+                .collect(Collectors.toMap(Book::getIsbn, book -> book));
     }
 
     //Posortuj książki po roku wydania zaczynając od wydanej najpóźniej.
     public List<Book> sortBookReverseOrder(List<Book> list) {
-        return list.stream().sorted(Comparator.comparing(book -> book.getYear(), Comparator.reverseOrder())).collect(Collectors.toList());
+        return list.stream()
+                .sorted(Comparator.comparing(Book::getYear, Comparator.reverseOrder()))
+                .collect(Collectors.toList());
     }
 
     // Posortuj książki po roku wydania zaczynając od wydanej najwcześniej
     public List<Book> sortBook(List<Book> list) {
-        return list.stream().sorted(Comparator.comparing(book -> book.getYear())).collect(Collectors.toList());
+        return list.stream()
+                .sorted(Comparator.comparing(Book::getYear))
+                .collect(Collectors.toList());
     }
 
     // Podziel listę książek na 3 listy po 2 książki i zwróć z metody. (*) (bez streama)
     public List<List<Book>> divideList(List<Book> list) {
         List<List<Book>> finalList = new ArrayList<>();
-        for (int i = 0; i <= list.size()/2+1; i=i+2) {
-            finalList.add(list.subList(i,i+2));
+        for (int i = 0; i <= list.size() / 2 + 1; i = i + 2) {
+            finalList.add(list.subList(i, i + 2));
         }
         return finalList;
     }
 
-    // Pogrupuj książki po roku wydania. Metoda powinna zwrócić Map<Integer, List<Book>>
+    // Pogrupuj książki po roku wydania. Metoda powinna zwrócić Map<Integer, bookstore.List<bookstore.structure.Book>>
     // gdzie kluczem jest rok wydania a wartością lista książek wydana w tym roku. (*)
-//    public Map<Integer, List<Book>> mapOfBooksByYear (List<Book> list){
-//        for (Book book:list) {
-//
-//        }
-//    }
+    public Map<Integer, List<Book>> mapOfBooksByYear(List<Book> list) {
+        return list.stream()
+                .collect(Collectors.groupingBy(Book::getYear));
+    }
+
+    public Map<Integer, List<Book>> mapOfBooksByYearByLoop(List<Book> list) {
+        Map<Integer, List<Book>> collect = new HashMap<>();
+        for (Book book : list) {
+            if (collect.containsKey(book.getYear())) {
+                collect.get(book.getYear()).add(book);
+            } else {
+                List<Book> books = new ArrayList<>();
+                books.add(book);
+                collect.put(book.getYear(), books);
+            }
+        }
+        return collect;
+    }
+
+    // Podziel książki na te wydane po 2009 roku i pozostałe.
+    // Metoda powinna zwrócić Map<Boolean, bookstore.List<bookstore.structure.Book>> gdzie kluczem jest
+    // boolean oznaczający czy została wydana po 2009 a wartością będą listy książek. (*)
+    public Map<Boolean, List<Book>> mapOfBooksAfter2009(List<Book> list) {
+        return list.stream()
+                .collect(Collectors.groupingBy(o -> o.getYear() > 2009));
+    }
+
 }
